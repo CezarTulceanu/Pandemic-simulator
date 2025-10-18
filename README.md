@@ -18,7 +18,7 @@ This project provides a dual-approach analysis of infectious disease dynamics wi
 
 The project is structured into two distinct Python scripts that work in tandem.
 
-### Part 1: `theoretical_model.py`
+### Part 1: `theoretical-model.py`
 
 This script serves as the analytical core of the project. It does not run any random simulations; instead, it uses a deterministic mathematical model to compute the exact answer.
 
@@ -31,7 +31,7 @@ This script serves as the analytical core of the project. It does not run any ra
     -   The **exact expected value** of infected individuals.
     -   The **required number of simulations (`R`)** needed for the Monte Carlo model to achieve statistical significance.
 
-### Part 2: `monte_carlo_simulation.py`
+### Part 2: `monte-carlo-simulation.py`
 
 This script runs the stochastic simulation to validate the theoretical findings.
 
