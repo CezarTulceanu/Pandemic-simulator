@@ -3,7 +3,7 @@
 ![Language](https://img.shields.io/badge/Language-Python-blue.svg)
 ![Libraries](https://img.shields.io/badge/Libraries-NumPy%20%7C%20SciPy%20%7C%20Matplotlib-orange.svg)
 
-**[View the Full Project Report (PDF)](link/to/your/report.pdf)**
+**[View the Full Project Report (PDF)](report/project_report.pdf)**
 
 This project provides a dual-approach analysis of infectious disease dynamics within a population. It contrasts a deterministic theoretical model, which calculates the exact expected outcome, with a stochastic Monte Carlo simulation, which validates the results empirically.
 
