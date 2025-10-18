@@ -43,8 +43,7 @@ total_infected_sum = 0
 # The parameters for the simulation runs
 n_people = 100
 initial_infected = 3
-p_infection = 0.23 / (n_people -1) # The probability p in the problem is per encounter. 
-                                   # We must divide by (n-1) to get the per-person probability used here.
+p_infection = 0.23
 q_healing = 0.10
 z_days = 10
 
@@ -53,4 +52,5 @@ for i in range(num_simulations):
 
 # Calculate and print the average number of infected people over all simulations
 average_infected = total_infected_sum / num_simulations
+
 print("Monte Carlo Simulation Average:", average_infected)
