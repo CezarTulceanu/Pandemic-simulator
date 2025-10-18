@@ -3,56 +3,50 @@
 ![Language](https://img.shields.io/badge/Language-Python-blue.svg)
 ![Libraries](https://img.shields.io/badge/Libraries-NumPy%20%7C%20SciPy%20%7C%20Matplotlib-orange.svg)
 
-A comprehensive simulation and analysis of infectious disease dynamics within a small population. This project implements two distinct approaches: a deterministic theoretical model using matrix algebra to calculate the exact expected value of infected individuals, and a stochastic Monte Carlo simulation to validate the theoretical results empirically.
+**[View the Full Project Report (PDF)](link/to/your/report.pdf)**
+
+This project provides a dual-approach analysis of infectious disease dynamics within a population. It contrasts a deterministic theoretical model, which calculates the exact expected outcome, with a stochastic Monte Carlo simulation, which validates the results empirically.
 
 ## Key Features
 
--   **Theoretical Modeling:** Calculates the precise expected number of infected individuals after a set number of days using probability theory and matrix exponentiation.
--   **Monte Carlo Simulation:** Simulates the day-by-day interactions of individuals based on probabilistic rules for infection and recovery.
--   **Statistical Validation:** Uses Chebyshev's inequality to determine the sufficient number of simulations required to achieve a desired statistical accuracy.
--   **Data Visualization:** Provides a clear visual comparison of the theoretical prediction versus the simulated results, demonstrating the Law of Large Numbers.
+-   **Theoretical Modeling:** Calculates the precise expected value of infected individuals after a set number of days using probability theory and matrix exponentiation.
+-   **Monte Carlo Simulation:** Simulates the day-by-day probabilistic interactions of individuals to approximate the real-world evolution of the pandemic.
+-   **Statistical Validation:** Uses Chebyshev's inequality to determine the exact number of simulations required to achieve a high degree of statistical confidence (95% confidence with an error margin of 0.25).
+-   **Data Visualization:** Includes logic to generate plots that visually confirm the simulation's convergence to the theoretical value, demonstrating the Law of Large Numbers.
 
-## How It Works
+## Methodology
 
-The simulation models a town of **N** inhabitants, with **K** initially infected people, over **Z** days. The core parameters are:
--   `p%`: The probability of a healthy person getting infected upon meeting an infected person.
--   `q%`: The probability of an infected person recovering at the end of a day.
+The project is structured into two distinct Python scripts that work in tandem.
 
-### 1. The Theoretical Model (Deterministic)
+### Part 1: `theoretical_model.py`
 
-This model calculates the exact expected value without running any simulations.
+This script serves as the analytical core of the project. It does not run any random simulations; instead, it uses a deterministic mathematical model to compute the exact answer.
 
-1.  **Infection & Healing Matrices:** Two transition matrices are constructed:
-    -   An **Infection Matrix (`inf`)**: `inf[i][j]` stores the probability of going from `i` infected people in the morning to `j` by noon.
-    -   A **Healing Matrix (`heal`)**: `heal[i][j]` stores the probability of going from `i` infected people at noon to `j` by evening.
-2.  **Daily Transition Matrix:** These matrices are multiplied (`dp = inf * heal`) to create a single-day transition matrix. `dp[i][j]` represents the probability of starting a day with `i` infected and ending with `j`.
-3.  **Multi-Day Projection:** This daily matrix is raised to the power of **Z** days (`final = dp**Z`). The resulting matrix `final[i][j]` gives the probability of having `j` infected people after `Z` days, given an initial count of `i`.
-4.  **Expected Value:** The final expected value is calculated by summing `j * final[K][j]` for all possible `j`.
+1.  **Transition Matrices:** It constructs two matrices using binomial probabilities:
+    -   An **Infection Matrix (`inf`)**: The probability of transitioning from `i` to `j` infected people during the morning infection phase.
+    -   A **Healing Matrix (`heal`)**: The probability of transitioning from `i` to `j` infected people during the evening recovery phase.
+2.  **Daily Projection:** These are multiplied (`dp = inf * heal`) to create a single-day transition probability matrix.
+3.  **Final Distribution:** The daily matrix is raised to the power of the total number of days (`Z`) to find the final probability distribution of all possible outcomes.
+4.  **Key Outputs:** The script calculates and prints two crucial values:
+    -   The **exact expected value** of infected individuals.
+    -   The **required number of simulations (`R`)** needed for the Monte Carlo model to achieve statistical significance.
 
-### 2. The Monte Carlo Simulation (Stochastic)
+### Part 2: `monte_carlo_simulation.py`
 
-This model simulates the pandemic directly to approximate the expected value.
+This script runs the stochastic simulation to validate the theoretical findings.
 
-1.  **Required Runs (`R`):** The theoretical model is first used to calculate the variance of the outcome. This variance, along with a desired error margin (`epsilon`) and confidence level, is plugged into a formula derived from **Chebyshev's inequality** to determine the necessary number of simulations (`R`) for a statistically significant result.
-2.  **Simulation Loop:** For each of the `R` simulations:
-    - A population vector is initialized.
-    - For each of the `Z` days:
-        - Every pair of individuals meets, and infections are simulated based on probability `p`.
-        - At the end of the day, recoveries are simulated for each sick person based on probability `q`.
-3.  **Final Result:** The average number of infected people across all `R` simulations is calculated. This average converges to the theoretical expected value.
+1.  **Simulation Loop:** It runs `R` independent simulations, where `R` is the number determined by the `theoretical_model.py` script.
+2.  **Daily Process:** For each day within a simulation, it models:
+    -   **Infection:** Every pair of healthy and infected individuals meets, and a random event determines if an infection occurs based on probability `p`.
+    -   **Recovery:** Every infected individual has a chance to recover based on probability `q`.
+3.  **Aggregation & Visualization:** After all simulations are complete, the script calculates the average number of infected individuals. This average should converge to the expected value from Part 1. It can also be extended with `matplotlib` to plot the results.
 
 ## Results and Validation
 
-The model's robustness is confirmed by comparing the output of the Monte Carlo simulation with the value predicted by the theoretical model. As the number of simulations increases, the running average of the simulation results converges precisely to the deterministic expected value.
+The model's robustness is confirmed by the simulation's output. The running average of the Monte Carlo simulation converges precisely to the deterministic expected value calculated by the theoretical model, providing a powerful visual confirmation of the Law of Large Numbers.
 
-![Simulation Convergence and Distribution](path/to/your/simulation_results.png)
+![Simulation Convergence and Distribution](images/monte_carlo_simulation.png)
 *Left: The running average of infected cases converges to the theoretical expected value. Right: A histogram showing the frequency distribution of outcomes across all simulations.*
-
-## Technology Stack
-
--   **Language:** Python
--   **Numerical Computation:** NumPy, SciPy (specifically for binomial coefficients)
--   **Data Visualization:** Matplotlib
 
 ## Setup and Usage
 
@@ -67,13 +61,40 @@ cd your-repo-name
 ```
 
 **3. Install dependencies:**
-*(Note: Please create a `requirements.txt` file for a professional project. You can generate one with `pip freeze > requirements.txt`)*
+A `requirements.txt` file is recommended. You can create one with `pip freeze > requirements.txt`.
 ```bash
 pip install numpy scipy matplotlib
 ```
 
-**4. Run the simulation:**
-*(You can create a `main.py` script that takes command-line arguments for the parameters)*
+**4. Follow the two-step workflow:**
+
+### Step 1: Run the Theoretical Model
+
+First, configure the parameters (population, initial cases, etc.) inside `theoretical_model.py`. Then run it to calculate the exact expected value and the required number of simulations.
+
 ```bash
-python main.py --population 100 --infected 10 --days 30 --infection-prob 5 --recovery-prob 10
+python theoretical_model.py
 ```
+Note the two numbers in the output. They will be the input for the next step.
+
+**Example Output:**
+```
+Expected number of infected people: 25.135
+Required number of simulations: 15420
+```
+
+### Step 2: Run the Monte Carlo Simulation
+
+Now, open `monte_carlo_simulation.py` and update its parameters to match the first script. Crucially, set the `num_simulations` variable to the value you obtained from Step 1.
+
+```python
+# Inside monte_carlo_simulation.py
+num_simulations = 15420 # <-- Update this value
+# ... other parameters ...
+```
+
+Run the script to start the simulation.
+```bash
+python monte_carlo_simulation.py
+```
+The final average printed by this script should be extremely close to the expected value calculated in Step 1.
