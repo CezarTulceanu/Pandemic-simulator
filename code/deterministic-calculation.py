@@ -46,7 +46,7 @@ for i in range(0, n + 1):
     ans += i * final[initial_cases][i]
 print("Expected value:", ans)  # returns the expected value
 
-# --- Calculation for the required number of simulations ---
+# Calculation for the required number of simulations to achieve a certain accuracy for a certain margin of error
 
 expected_value = ans
 expected_value_of_square = 0.0
@@ -61,5 +61,6 @@ epsilon = 0.25
 
 sim_number = ((variation / (epsilon * epsilon)) / (1 - accuracy_percentage / 100)) + 1
 sim_number = int(sim_number)
+
 
 print("Required number of simulations:", sim_number)
