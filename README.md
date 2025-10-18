@@ -61,7 +61,6 @@ cd your-repo-name
 ```
 
 **3. Install dependencies:**
-A `requirements.txt` file is recommended. You can create one with `pip freeze > requirements.txt`.
 ```bash
 pip install numpy scipy matplotlib
 ```
