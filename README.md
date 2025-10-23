@@ -56,8 +56,8 @@ The model's robustness is confirmed by the simulation's output. The running aver
 
 **2. Clone the repository:**
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/CezarTulceanu/Pandemic-Simulator.git
+cd Pandemic-Simulator/code
 ```
 
 **3. Install dependencies:**
